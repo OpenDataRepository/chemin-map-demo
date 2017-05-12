@@ -1,0 +1,16 @@
+{
+  "name": "chemin_map_demo",
+  "version": "1.0.0",
+  "description": "Demo of multiple select map interaction with Chemin database.",
+  "main": "index.js",
+  "dependencies": {
+    "MapifyCustom": "git+https://github.com/natestone/Mapify.git",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nate Stone",
+  "license": "MIT"
+}
