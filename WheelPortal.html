@@ -49,7 +49,7 @@ jQuery(function() {
             var search_string = "";
             $(".mapify-svg").find(".mapify-selected").each(function() {
                 var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
-                search_string += '"' + search_term + '" || '
+                search_string += search_term + ' || '
             })
             search_string = search_string.replace(/\s\|\|\s$/,'')
 
