@@ -23,17 +23,9 @@
                 }
             })
 
-<<<<<<< HEAD:WheelPortal.html
             // Prevent clicks on the mapify polygons
             $(".mapify-svg polygon").click(function(e) {
                 e.preventDefault()
-=======
-            // Get selected names separated by pipes
-            var search_string = "";
-            $(".mapify-svg").find(".mapify-selected").each(function() {
-                var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
-                search_string += search_term + ' || '
->>>>>>> a44c678e26285094582f9b693cc4fa09394a5c11:wheel_portal.html
             })
             // Add click listener for the Map Areas
             $(".clickable").click(function(e) {
