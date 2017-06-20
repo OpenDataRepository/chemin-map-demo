@@ -1,121 +1,106 @@
-<!--
-     Notes:
-     Oudam and Rocknest have spotty behavior because they each have two entries on CheMin (Oudam 12a, Oudam 13a,
-     Rocknest (4th Scoop), Rocknest (5th Scoop). This must be fixed on odr.io, not in this code.
--->
-
 <html>
 <head>
-<link rel="stylesheet" href="node_modules/MapifyCustom/build/jquery.mapify.css">
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="node_modules/MapifyCustom/src/mapify.js"></script>
-<script>
-jQuery(function() {
-    $("img[usemap]").mapify({
-        popOver: {
-            content: function(zone){
-                // Build the content for the popOver
-                var data = zone.attr("data-zone").split(/\|/);
-                var data_html = "<ul>";
-                data_html += "<li><b>Mars Area Location:</b> " + data[0] + "</li>";
-                data_html += "<li><b>Site Position:</b> " + data[1] + "</li>";
-                data_html += "<li><b>Distance to Bradbury (m):</b> " + data[2] + "</li>";
-                data_html += "</ul>";
-                return "<strong>" + zone.attr("data-title") + "</strong>" + data_html;
-            },
-            delay: 0.7,
-            margin: "15px",
-            height: "130px",
-            width: "260px"
-        }
-    })
-       
-    // Prevent clicks on the mapify polygons
-    $(".mapify-svg polygon").click(function(e) {
-        e.preventDefault()
-    })
-
-    // Add click listener for the Map Areas
-    $(".clickable").click(function(e) {
-        e.preventDefault()
-        // Get index
-        // Highlight index in svg
-        $(".mapify-svg polygon:nth-child(" + ($(this).index()*1 + 1) + ")").toggleClass("mapify-selected")
-
-        // Show "search" button if selected > 1
-        if($(".mapify-selected").length >= 1) {
-            var base_url = "http://odr.io/chemin#/search/render/dt_id=43|gen="
-            var search_link = "<div class='search-link'><a target='_blank' href='" + base_url;
-
-            // Get selected names separated by pipes
-            var search_string = "";
-            $(".mapify-svg").find(".mapify-selected").each(function() {
-                var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
-                search_string += '"' + search_term + '" || '
+    <link rel="stylesheet" href="node_modules/MapifyCustom/build/jquery.mapify.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/MapifyCustom/src/mapify.js"></script>
+    <script>
+        jQuery(function() {
+            $("img[usemap]").mapify({
+                popOver: {
+                    content: function(zone){
+                        // Build the content for the popOver
+                        var data = zone.attr("data-zone").split(/\|/);
+                        var data_html = "<ul>";
+                        data_html += "<li><b>Mars Area Location:</b> " + data[0] + "</li>";
+                        data_html += "<li><b>Site Position:</b> " + data[1] + "</li>";
+                        data_html += "<li><b>Distance to Bradbury (m):</b> " + data[2] + "</li>";
+                        data_html += "</ul>";
+                        return "<strong>" + zone.attr("data-title") + "</strong>" + data_html;
+                    },
+                    delay: 0.35,
+                    margin: "15px",
+                    height: "130px",
+                    width: "260px"
+                }
             })
-            search_string = search_string.replace(/\s\|\|\s$/,'')
 
-            //Makes the string compatible with the browser
-            search_link += encodeURIComponent(search_string) + "/1'>Click to search</a></div>"
-            console.log(search_link)
+            // Prevent clicks on the mapify polygons
+            $(".mapify-svg polygon").click(function(e) {
+                e.preventDefault()
+            })
+            // Add click listener for the Map Areas
+            $(".clickable").click(function(e) {
+                e.preventDefault()
+                // Get index
+                // Highlight index in svg
+                $(".mapify-svg polygon:nth-child(" + ($(this).index()*1 + 1) + ")").toggleClass("mapify-selected")
+                // Show "search" button if selected > 1
+                if($(".mapify-selected").length >= 1) {
+                    var base_url = "http://odr.io/chemin#/search/render/dt_id=43|406="
+                    var search_link = "<div class='search-link'><a target='_blank' href='" + base_url;
+                    // Get selected names separated by pipes
+                    var search_string = "";
+                    $(".mapify-svg").find(".mapify-selected").each(function() {
+                        var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
+                        search_string +=  search_term + ' || '
+                    })
+                    search_string = search_string.replace(/\s\|\|\s$/,'')
+                    //Makes the string compatible with the browser
+                    search_link += encodeURIComponent(search_string) + "/1'>Click to search</a></div>"
+                    console.log(search_link)
+                    $("#search-link").html(search_link)
 
-            $("#search-link").html(search_link)
-            
-            $("#search-link").show()
+                    $("#search-link").show()
+                }
+                else {
+                    $("#search-link").html("")
+                    $("#search-link").hide()
+                }
+            })
+        })
+    </script>
+
+    <style>
+        .mapify-hover {
+            opacity: 0.5;
         }
-        else {
-            $("#search-link").html("")
-            $("#search-link").hide()
+        .mapify-selected {
+            fill: #0f0;
+            opacity: 0.5;
         }
-    })
-})
-</script>
-
-<style>
-    .mapify-hover {
-        opacity: 0.5;
-    }
-
-    .mapify-selected {
-        fill: #0f0;	
-        opacity: 0.5;
-    }
-
-    #search-link {
-        display: none;
-        background: rgba(255,255,255,0.9);
-        border: 2px solid rgb(0,0,255,0.7);
-        border-radius: 8px;
-        position: absolute;
-        min-width: 200px;
-        right: 15px;
-        top: 15px;
-        z-index: 100;
-        padding: 8px;
-    }
-
-    #search-link a {
-        text-decoration: none;
-        margin-left: 50px;
-        margin-right: 50px;
-        font-size: 24px;
-        font-family: sans;
-        font-weight: 400;
-    }
-
-    .mapify-popOver {
-        padding: 16px 10px 10px 10px;
-    }
-    .mapify-popOver strong {
-        font-size: 18px;
-    }
-    .mapify-popOver-content ul {
-        list-style-type: none;
-    }
-    .mapify-popOver-content ul li {
-        margin-left: -50px;
-    }
-</style>
+        #search-link {
+            display: none;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid rgb(0,0,255,0.7);
+            border-radius: 8px;
+            position: absolute;
+            min-width: 200px;
+            right: 15px;
+            top: 15px;
+            z-index: 100;
+            padding: 8px;
+        }
+        #search-link a {
+            text-decoration: none;
+            margin-left: 50px;
+            margin-right: 50px;
+            font-size: 24px;
+            font-family: sans;
+            font-weight: 400;
+        }
+        .mapify-popOver {
+            padding: 16px 10px 10px 10px;
+        }
+        .mapify-popOver strong {
+            font-size: 18px;
+        }
+        .mapify-popOver-content ul {
+            list-style-type: none;
+        }
+        .mapify-popOver-content ul li {
+            margin-left: -50px;
+        }
+    </style>
 </head>
 <body>
 <img src="images/MapPortal.jpg" width="3300" height="2550" border="0" usemap="#Map" />
