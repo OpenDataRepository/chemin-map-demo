@@ -36,7 +36,7 @@
                 $(".mapify-svg polygon:nth-child(" + ($(this).index()*1 + 1) + ")").toggleClass("mapify-selected")
                 // Show "search" button if selected > 1
                 if($(".mapify-selected").length >= 1) {
-                    var base_url = "http://odr.io/chemin#/search/render/dt_id=43|406="
+                    var base_url = "http://epsilon.odr.io/chemin#/search/render/dt_id=43|406="
                     var search_link = "<div class='search-link'><a target='_blank' href='" + base_url;
                     // Get selected names separated by pipes
                     var search_string = "";

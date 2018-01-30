@@ -35,15 +35,15 @@
                 $(".mapify-svg polygon:nth-child(" + ($(this).index()*1 + 1) + ")").toggleClass("mapify-selected")
                 // Show "search" button if selected > 1
                 if($(".mapify-selected").length >= 1) {
-                    var base_url = "http://odr.io/chemin#/search/render/dt_id=43|415="
+                    var base_url = "http://epsilon.odr.io/chemin#/search/render/dt_id=43|415="
                     var search_link = "<div class='search-link'><a target='_blank' href='" + base_url;
                     // Get selected names separated by pipes
                     var search_string = "";
                     $(".mapify-svg").find(".mapify-selected").each(function() {
                         var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
-                        search_string += search_term + ' || '
+                        search_string += search_term + ','
                     })
-                    search_string = search_string.replace(/\s\|\|\s$/,'')
+                    search_string = search_string.replace(/,$/,'')
                     //Makes the string compatible with the browser
                     search_link += encodeURIComponent(search_string) + "/1'>Click to search</a></div>"
                     console.log(search_link)
