@@ -48,7 +48,7 @@
                     })
                     search_params["406"] = search_params["406"].replace(/\s\|\|\s$/,'')
 	            var search_key = btoa(JSON.stringify(search_params));
-                    search_key = search_key.replace(/==$/,'');
+                    search_key = search_key.replace(/=+$/,'');
                     //Makes the string compatible with the browser
                     var search_link = "<div class='search-link'><a target='_blank' href='";
 		    search_link += base_url + "/" + search_key
