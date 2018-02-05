@@ -7,7 +7,7 @@
 	var search_params = {};
 	search_params.dt_id = 43
 	search_params["406"] = "";
-        var base_url = "http://epsilon.odr.io/chemin#/search/render/0";
+        var base_url = "http://office_dev/app_dev.php/chemin#/app_dev.php/search/display/0";
         jQuery(function() {
             $("img[usemap]").mapify({
                 popOver: {
@@ -41,18 +41,20 @@
                 // Show "search" button if selected > 1
                 if($(".mapify-selected").length >= 1) {
                     // Get selected names separated by pipes
-		    search_params["406"] = "";
+		            search_params["406"] = "";
                     $(".mapify-svg").find(".mapify-selected").each(function() {
                         var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
                         search_params["406"] += search_term + ' || '
                     })
                     search_params["406"] = search_params["406"].replace(/\s\|\|\s$/,'')
-	            var search_key = btoa(JSON.stringify(search_params));
+	                var search_key = btoa(JSON.stringify(search_params));
                     search_key = search_key.replace(/=+$/,'');
+                    search_key = search_key.replace(/\+$/,'-');
+                    search_key = search_key.replace(/\/$/,'_');
                     //Makes the string compatible with the browser
                     var search_link = "<div class='search-link'><a target='_blank' href='";
-		    search_link += base_url + "/" + search_key
-		    search_link += "'>Click to search</a></div>";
+		            search_link += base_url + "/" + search_key
+		            search_link += "'>Click to search</a></div>";
                     $("#search-link").html(search_link)
                     $("#search-link").show()
                 }

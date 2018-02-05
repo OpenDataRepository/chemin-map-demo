@@ -4,14 +4,14 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/MapifyCustom/src/mapify.js"></script>
     <script>
-	var search_params = {};
-	search_params.dt_id = 43
-	search_params["415"] = "";
-        var base_url = "http://epsilon.odr.io/chemin#/search/render/0"
-        jQuery(function() {
+        var search_params = {};
+        search_params.dt_id = 43
+        search_params["415"] = "";
+        var base_url = "http://office_dev/app_dev.php/chemin#/app_dev.php/search/display/0"
+        jQuery(function () {
             $("img[usemap]").mapify({
                 popOver: {
-                    content: function(zone){
+                    content: function (zone) {
                         // Build the content for the popOver
                         var data = zone.attr("data-zone").split(/\|/);
                         var data_html = "<ul>";
@@ -28,31 +28,33 @@
             })
 
             // Prevent clicks on the mapify polygons
-            $(".mapify-svg polygon").click(function(e) {
+            $(".mapify-svg polygon").click(function (e) {
                 e.preventDefault()
             })
             // Add click listener for the Map Areas
-            $(".clickable").click(function(e) {
+            $(".clickable").click(function (e) {
                 e.preventDefault()
                 // Get index
                 // Highlight index in svg
-                $(".mapify-svg polygon:nth-child(" + ($(this).index()*1 + 1) + ")").toggleClass("mapify-selected")
+                $(".mapify-svg polygon:nth-child(" + ($(this).index() * 1 + 1) + ")").toggleClass("mapify-selected")
                 // Show "search" button if selected > 1
-                if($(".mapify-selected").length >= 1) {
+                if ($(".mapify-selected").length >= 1) {
                     // Get selected names separated by pipes
-		    search_params["415"] = "";
-                    $(".mapify-svg").find(".mapify-selected").each(function() {
+                    search_params["415"] = "";
+                    $(".mapify-svg").find(".mapify-selected").each(function () {
                         var search_term = $(".clickable:nth-child(" + ($(this).index() + 1) + ")").attr("data-searchterm")
                         search_params["415"] += search_term + ','
                     })
-                    search_params["415"] = search_params["415"].replace(/,$/,'')
-	            var search_key = btoa(JSON.stringify(search_params));
-		    search_key = search_key.replace(/=+$/,'');
+                    search_params["415"] = search_params["415"].replace(/,$/, '')
+                    var search_key = btoa(JSON.stringify(search_params));
+                    search_key = search_key.replace(/=+$/, '');
+                    search_key = search_key.replace(/\+$/, '-');
+                    search_key = search_key.replace(/\/$/, '_');
 
                     //Makes the string compatible with the browser
                     var search_link = "<div class='search-link'><a target='_blank' href='";
-		    search_link += base_url + "/" + search_key
-		    search_link += "'>Click to search</a></div>";
+                    search_link += base_url + "/" + search_key
+                    search_link += "'>Click to search</a></div>";
 
                     console.log(search_link)
                     $("#search-link").html(search_link)
@@ -70,22 +72,25 @@
         .mapify-hover {
             opacity: 0.5;
         }
+
         .mapify-selected {
             fill: #0f0;
             opacity: 0.5;
         }
+
         #search-link {
             display: none;
-            background: rgba(255,255,255,0.9);
-            border: 2px solid rgb(0,0,255,0.7);
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgb(0, 0, 255, 0.7);
             border-radius: 8px;
             position: absolute;
             min-width: 200px;
-            right: 15px;
+            left: 100px;
             top: 15px;
             z-index: 100;
             padding: 8px;
         }
+
         #search-link a {
             text-decoration: none;
             margin-left: 50px;
@@ -94,68 +99,184 @@
             font-family: sans;
             font-weight: 400;
         }
+
         .mapify-popOver {
             padding: 16px 10px 10px 10px;
         }
+
         .mapify-popOver strong {
             font-size: 18px;
         }
+
         .mapify-popOver-content ul {
             list-style-type: none;
         }
+
         .mapify-popOver-content ul li {
             margin-left: -50px;
+        }
+
+        .wrapper {
+            position: relative;
+        }
+        .left {
+            float: left;
+        }
+        .right {
+            padding-top: 50px;
         }
     </style>
 </head>
 <body>
-<img src="images/WheelPortal.jpg" width="1040" height="1205" border="0" usemap="#Map" />
-<!-- The map MUST use polygons only due to the Mapify Plugin -->
-<map name="Map" id="Map">
-    //The following set is for the individual cells on the wheel
-    <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly" coords="516,266,492,232,404,232,404,255,474,255,474,377,516,374,516,266" data-title="0a" data-searchterm="663">
-    <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly" coords="516,266,516,374,557,377,557,256,616,256,616,228,531,228,516,266" data-title="0b" data-searchterm="664">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="638,276,591,263,558,378,595,390,638,276" data-title="1a" data-searchterm="172">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="638,276,595,390,627,406,685,294,638,276" data-title="1b" data-searchterm="173">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="746,337,707,313,632,408,662,432,746,337" data-title="2a" data-searchterm="174">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="746,337,662,432,686,457,780,372,746,337" data-title="2b" data-searchterm="175">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="826,436,798,400,690,463,710,495,826,436" data-title="3a" data-searchterm="176">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="826,436,710,495,723,529,841,486,826,436" data-title="3b" data-searchterm="177">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="861,559,845,514,725,534,731,572,861,559" data-title="4a" data-searchterm="178">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="861,559,731,572,732,607,858,610,861,559" data-title="4b" data-searchterm="179">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="852,687,858,641,732,613,724,651,852,687" data-title="5a" data-searchterm="180">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="852,687,724,651,711,685,832,729,852,687" data-title="5b" data-searchterm="181">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="785,794,795,794,822,757,708,690,688,721,785,794" data-title="6a" data-searchterm="182">
-    <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly" coords="785,794,688,721,665,747,741,821,976,821,976,794,785,794" data-title="6b" data-searchterm="183">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="696,881,737,856,661,752,631,774,696,881" data-title="7a" data-searchterm="184">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="696,881,631,774,598,792,650,905,696,881" data-title="7b" data-searchterm="185">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="578,923,624,913,592,794,557,805,578,923" data-title="8a" data-searchterm="186">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="578,923,557,805,521,808,529,929,578,923" data-title="8b" data-searchterm="187">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="452,925,499,927,514,808,476,804,452,925" data-title="9a" data-searchterm="188">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="452,925,476,804,440,795,401,913,452,925" data-title="9b" data-searchterm="189">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="327,892,382,904,435,792,401,775,327,892" data-title="10a" data-searchterm="190">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="327,892,401,775,372,753,291,851,327,892" data-title="10b" data-searchterm="191">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="229,807,273,834,366,747,343,722,229,807" data-title="11a" data-searchterm="192">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="229,807,343,722,323,691,210,760,229,807" data-title="11b" data-searchterm="193">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="167,688,178,734,320,683,307,650,167,688" data-title="12a" data-searchterm="194">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="167,688,307,650,300,613,162,636,167,688" data-title="12b" data-searchterm="195">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="159,558,157,604,299,604,300,571,159,558" data-title="13a" data-searchterm="196">
-    <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly" coords="159,558,300,571,306,535,166,510,159,558" data-title="13b" data-searchterm="219">
-    <area class="clickable" data-zone="Mylar|Permanent Standard" href="#" shape="poly" coords="194,430,185,456,66,456,66,485,210,485,308,529,322,494,194,430" data-title="14a" data-searchterm="197">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="194,430,322,494,341,463,231,397,194,430" data-title="14b" data-searchterm="198">
-    <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly" coords="293,345,240,365,346,456,371,431,293,345" data-title="15a" data-searchterm="199">
-    <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly" coords="293,345,371,431,401,408,340,315,110,315,110,345,293,345" data-title="15b" data-searchterm="200">
+<div class="wrapper">
+    <div class="left">
 
-    //This set is for the two cell groupings, Mylar and Kapton, on the bottom right of the image
-    <area class="clickable" data-zone="Mylar|(Blue Cells)" href="#" shape="poly" coords="667,1089,858,1089,858,1117,667,1117,667,1089" data-title="Mylar Cells" data-searchterm="184,185,186,187,188,189,190,191,192,193,194,195,196,219,197">
-    <area class="clickable" data-zone="Kapton|(Yellow Cells)" href="#" shape="poly" coords="667,1117,896,1117,896,1145,667,1145,667,1117" data-title="Kapton Cells" data-searchterm="663,664,172,173,174,175,176,177,178,179,180,181,182,183,198,199,200">
+        <img src="images/WheelPortal.jpg" width="1040" height="1205" border="0" usemap="#Map"/>
+        <!-- The map MUST use polygons only due to the Mapify Plugin -->
+        <map name="Map" id="Map">
+            //The following set is for the individual cells on the wheel
+            <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly"
+                  coords="516,266,492,232,404,232,404,255,474,255,474,377,516,374,516,266" data-title="0a"
+                  data-searchterm="663">
+            <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly"
+                  coords="516,266,516,374,557,377,557,256,616,256,616,228,531,228,516,266" data-title="0b"
+                  data-searchterm="664">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="638,276,591,263,558,378,595,390,638,276" data-title="1a" data-searchterm="172">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="638,276,595,390,627,406,685,294,638,276" data-title="1b" data-searchterm="173">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="746,337,707,313,632,408,662,432,746,337" data-title="2a" data-searchterm="174">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="746,337,662,432,686,457,780,372,746,337" data-title="2b" data-searchterm="175">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="826,436,798,400,690,463,710,495,826,436" data-title="3a" data-searchterm="176">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="826,436,710,495,723,529,841,486,826,436" data-title="3b" data-searchterm="177">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="861,559,845,514,725,534,731,572,861,559" data-title="4a" data-searchterm="178">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="861,559,731,572,732,607,858,610,861,559" data-title="4b" data-searchterm="179">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="852,687,858,641,732,613,724,651,852,687" data-title="5a" data-searchterm="180">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="852,687,724,651,711,685,832,729,852,687" data-title="5b" data-searchterm="181">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="785,794,795,794,822,757,708,690,688,721,785,794" data-title="6a" data-searchterm="182">
+            <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly"
+                  coords="785,794,688,721,665,747,741,821,976,821,976,794,785,794" data-title="6b"
+                  data-searchterm="183">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="696,881,737,856,661,752,631,774,696,881" data-title="7a" data-searchterm="184">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="696,881,631,774,598,792,650,905,696,881" data-title="7b" data-searchterm="185">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="578,923,624,913,592,794,557,805,578,923" data-title="8a" data-searchterm="186">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="578,923,557,805,521,808,529,929,578,923" data-title="8b" data-searchterm="187">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="452,925,499,927,514,808,476,804,452,925" data-title="9a" data-searchterm="188">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="452,925,476,804,440,795,401,913,452,925" data-title="9b" data-searchterm="189">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="327,892,382,904,435,792,401,775,327,892" data-title="10a" data-searchterm="190">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="327,892,401,775,372,753,291,851,327,892" data-title="10b" data-searchterm="191">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="229,807,273,834,366,747,343,722,229,807" data-title="11a" data-searchterm="192">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="229,807,343,722,323,691,210,760,229,807" data-title="11b" data-searchterm="193">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="167,688,178,734,320,683,307,650,167,688" data-title="12a" data-searchterm="194">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="167,688,307,650,300,613,162,636,167,688" data-title="12b" data-searchterm="195">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="159,558,157,604,299,604,300,571,159,558" data-title="13a" data-searchterm="196">
+            <area class="clickable" data-zone="Mylar|Reusable" href="#" shape="poly"
+                  coords="159,558,300,571,306,535,166,510,159,558" data-title="13b" data-searchterm="219">
+            <area class="clickable" data-zone="Mylar|Permanent Standard" href="#" shape="poly"
+                  coords="194,430,185,456,66,456,66,485,210,485,308,529,322,494,194,430" data-title="14a"
+                  data-searchterm="197">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="194,430,322,494,341,463,231,397,194,430" data-title="14b" data-searchterm="198">
+            <area class="clickable" data-zone="Kapton|Reusable" href="#" shape="poly"
+                  coords="293,345,240,365,346,456,371,431,293,345" data-title="15a" data-searchterm="199">
+            <area class="clickable" data-zone="Kapton|Permanent Standard" href="#" shape="poly"
+                  coords="293,345,371,431,401,408,340,315,110,315,110,345,293,345" data-title="15b"
+                  data-searchterm="200">
 
-    //This set is for the two cell groupings, red cells permanent standards and green cells reusable, on the bottom left of the image
-    <area class="clickable" data-zone="Permanent Standard|(Red Cells)" href="#" shape="poly" coords="118,1089,457,1089,457,1117,118,1117,118,1089" data-title="Standard Cells" data-searchterm="663,664,183,197,200">
-    <area class="clickable" data-zone="Reusable|(Green Cells)" href="#" shape="poly" coords="118,1117,349,1117,349,1145,118,1145,118,1117" data-title="Reusable Cells" data-searchterm="172,173,174,175,176,177,178,179,180,181,182,184,185,186,187,188,189,190,191,192,193,194,195,196,219,198,199">
+            //This set is for the two cell groupings, Mylar and Kapton, on the bottom right of the image
+            <area class="clickable" data-zone="Mylar|(Blue Cells)" href="#" shape="poly"
+                  coords="667,1089,858,1089,858,1117,667,1117,667,1089" data-title="Mylar Cells"
+                  data-searchterm="184,185,186,187,188,189,190,191,192,193,194,195,196,219,197">
+            <area class="clickable" data-zone="Kapton|(Yellow Cells)" href="#" shape="poly"
+                  coords="667,1117,896,1117,896,1145,667,1145,667,1117" data-title="Kapton Cells"
+                  data-searchterm="663,664,172,173,174,175,176,177,178,179,180,181,182,183,198,199,200">
 
-</map>
-<!-- The search link appears when one or more items are selected. -->
-<div id="search-link"></div>
+            //This set is for the two cell groupings, red cells permanent standards and green cells reusable, on the
+            bottom left of the image
+            <area class="clickable" data-zone="Permanent Standard|(Red Cells)" href="#" shape="poly"
+                  coords="118,1089,457,1089,457,1117,118,1117,118,1089" data-title="Standard Cells"
+                  data-searchterm="663,664,183,197,200">
+            <area class="clickable" data-zone="Reusable|(Green Cells)" href="#" shape="poly"
+                  coords="118,1117,349,1117,349,1145,118,1145,118,1117" data-title="Reusable Cells"
+                  data-searchterm="172,173,174,175,176,177,178,179,180,181,182,184,185,186,187,188,189,190,191,192,193,194,195,196,219,198,199">
+
+        </map>
+        <!-- The search link appears when one or more items are selected. -->
+        <div id="search-link"></div>
+    </div>
+    <div class="right">
+        <div class="lm-col-4 lol-page-item " id="link">
+
+            <div class="lol-item-column">
+                <style>
+                    #link a:link,
+                    #link a:visited,
+                    #link a:hover {
+                        color: #189fc6;
+                    }
+                </style>
+                <h3>To access to the information in the database, please click on a used cell name:</h3>
+                <ul style="list-style-type:circle">
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/21828/dt_id=43/1"
+                           target="blank">1a Kapton</a>: Rocknest (4th scoop)
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/116555/dt_id=43/1"
+                           target="blank">5b Kapton</a>: Telegraph Peak
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/116554/dt_id=43/1"
+                           target="blank">6a Kapton</a>: Mohave2
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/141470/dt_id=43/1"
+                           target="blank">14b Kapton</a>: Buckskin
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/21553/dt_id=43/1"
+                           target="blank">7a Mylar</a>: Rocknest (5th scoop)
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/141472/dt_id=43/1"
+                           target="blank">7b Mylar</a>: Big Sky
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/141473/dt_id=43/1"
+                           target="blank">8a Mylar</a>: Greenhorn
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/21635/dt_id=43/1"
+                           target="blank">12a Mylar</a>: Confidence Hills
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/21573/dt_id=43/1"
+                           target="blank">12b Mylar</a>: Cumberland
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/21582/dt_id=43/1"
+                           target="blank">13a Mylar</a>: Windjana
+                    </li>
+                    <li><a href="http://office_dev/app_dev.php/chemin#/app_dev.php/results/view/21562/dt_id=43/1"
+                           target="blank">13b Mylar</a>: John Klein
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>
